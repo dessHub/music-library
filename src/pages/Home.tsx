@@ -1,10 +1,16 @@
-import { useState, ChangeEvent } from "react";
+import { useState, useEffect, useCallback, ChangeEvent } from "react";
+import { debounce } from "lodash"
 import Layout from "../components/layouts/Layout";
 import {Option} from "../components/molecules/Select";
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { fetchTracks, trackSelector } from "../features/tracks";
+import Loader from "../components/atoms/Loader";
 
 const Home = () => {
+    const dispatch = useAppDispatch();
+
     const options: Option[] = [
         {title: 'All', name: 'q'}, 
         {title: 'Artist', name: 'artist'}, 
@@ -13,7 +19,8 @@ const Home = () => {
     ];
     const [search, setSearch] = useState<string>('');
     const [type, setType] = useState<string>('q');
-    const tracks = [1,2,3,4,5,6,7,8,9]
+
+    const {pending, tracks} = useAppSelector(trackSelector);
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value)
@@ -23,6 +30,18 @@ const Home = () => {
         const name = e.target.value;
         setType(name);
     }
+
+    // delay dispatch for 500 miliseconds to avoid multiple request to API
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const debouncedDispatch = useCallback(
+        debounce((type_, search_) => {
+            dispatch(fetchTracks({params: `${type_}=${search_}`}))
+        }, 500)
+      , []);
+
+    useEffect(() => {
+        debouncedDispatch(type, search)
+    }, [debouncedDispatch, type, search])
 
     return (
         <Layout>
@@ -54,18 +73,27 @@ const Home = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 md:gap-4 w-full px-10 py-5">
-                    {tracks.map((track) => (
-                        <div className="bg-gray-100 rounded-lg border-2 border-slate-200 mb-5" key={track}>
+                    {tracks && tracks.map((track, index) => (
+                        <div className="bg-gray-100 rounded-lg border-2 border-slate-200 mb-5" key={track.id}>
                             <div className="w-full h-auto bg-teal-100">
-                                <img src="https://api.deezer.com/artist/288166/image" alt="Song cover" className="w-full rounded-t-sm" />
+                                <img src={track.artist.picture} alt="Song cover" className="w-full rounded-t-sm" />
                             </div>
                             <div className="p-5">
-                                <div className="text-teal-600 font-bold text-xl">Baby</div>
-                                <div className="text-sm font-thin">By <Link to="/" className="text-sm text-sky-700 font-bold underline">Justin Bieber</Link></div>
-                                <div className="text-sm font-light"><span className="text-xs font-semibold">Album:</span> My World 2.0</div>
+                                <div className="text-teal-600 font-bold text-xl">{track.title}</div>
+                                <div className="text-sm font-thin">By <Link to={`/artist/${track.artist.id}`} className="text-sm text-sky-700 font-bold underline">{track.artist.name}</Link></div>
+                                <div className="text-sm font-light"><span className="text-xs font-semibold">Album:</span> {track.album.title}</div>
                             </div>
                         </div>
                     ))}
+                </div>
+
+                <div className="flex flex-col w-full px-10 py-5">
+                    {(!pending && tracks.length === 0) && (
+                        <div className="text-3xl font-bold text-teal-400 text-center w-full">
+                            No Tracks found. Update search values 
+                        </div>
+                    ) }
+                    {pending && (<Loader />)}
                 </div>
             </>
         </Layout>

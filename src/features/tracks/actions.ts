@@ -11,10 +11,10 @@ export const fetchTracks = createAsyncThunk(
     async (payload: Payload) => {
       const response = await ApiService.get(`/tracks?${payload.params}`)
         .then((res) => {
-          return {tracks: res.data};
+          return {tracks: res.data.data};
         })
         .catch((error) => {
-          console.log('err', error)
+          console.log('err==', error)
           return error;
         });
   
