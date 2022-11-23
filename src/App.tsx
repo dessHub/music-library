@@ -1,12 +1,12 @@
-import './App.css';
+
+import { Routes,Route } from "react-router-dom";
+import Home from "./pages/Home";
 
 function App() {
   return (
-    <div className="App">
-      <h1 className="text-teal-300 text-3xl font-bold underline">
-        Hello world!
-      </h1>
-    </div>
+    <Routes>
+      <Route index element={<Home />} />
+    </Routes>
   );
 }
 
