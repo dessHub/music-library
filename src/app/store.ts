@@ -1,9 +1,11 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
+import { artistReducer } from "../features/artists";
 import { trackReducer } from "../features/tracks";
 
 export const store = configureStore({
   reducer: {
-    track: trackReducer
+    track: trackReducer,
+    artist: artistReducer
   },
 });
 
