@@ -1,6 +1,37 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This a simple Music library app build with React Typescript. You can search for tracks by label, artist and album. It consumes an [API](https://github.com/dessHub/deezer-proxy-api), which acts as proxy to [Deezer API](https://developers.deezer.com/api/artist).
+
+Here is a [live demo](https://music-library-e62e4.web.app/)
+
+## How to set up locally
+
+### Prerequisite
+You need Node js installed
+
+```
+node: >14.0.0
+```
+
+### Steps
+1. Clone this repository
+2. In your shell/terminal, navigate to the project root directory
+
+  ```
+  cd /path/to/music-library
+  ```
+
+3. Install the dependencies
+  
+  ```
+  npm install
+  ```
+  
+4. Start the server
+   
+   ```
+   npm start
+   ```
 
 ## Available Scripts
 
@@ -28,19 +59,3 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
