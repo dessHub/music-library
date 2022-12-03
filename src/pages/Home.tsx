@@ -2,12 +2,12 @@ import { useState, useEffect, useCallback, ChangeEvent } from "react";
 import { debounce } from "lodash"
 import Layout from "../components/layouts/Layout";
 import {Option} from "../components/molecules/Select";
-import { MagnifyingGlassIcon, PlayIcon } from '@heroicons/react/20/solid'
+import { MagnifyingGlassIcon, PlayIcon, MusicalNoteIcon } from '@heroicons/react/20/solid'
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { fetchTracks, trackSelector } from "../features/tracks";
 import Loader from "../components/atoms/Loader";
-import { MusicalNoteIcon } from "@heroicons/react/20/solid";
+import PlayerModal from "../components/atoms/PlayerModal";
 
 const Home = () => {
     const dispatch = useAppDispatch();
@@ -20,6 +20,8 @@ const Home = () => {
     ];
     const [search, setSearch] = useState<string>('');
     const [type, setType] = useState<string>('q');
+    const [open, setOpen] = useState<boolean>(false);
+    const [preview, setPreview] = useState<string>('');
 
     const {pending, tracks} = useAppSelector(trackSelector);
 
@@ -44,8 +46,14 @@ const Home = () => {
         debouncedDispatch(type, search)
     }, [debouncedDispatch, type, search])
 
+    const previewTrack = (trackPreview: string) => {
+        setPreview(trackPreview);
+        setOpen(true)
+    }
+
     return (
         <Layout>
+            <>
             <div className="grid grid-cols-6 gap-10 px-10 py-5">
                 <div className="md:col-start-2 col-span-6 md:col-span-4 p-1 flex shadow-sm">
                     <div className=" bg-gray-300 inset-y-0 flex items-center rounded-l-full  border-1 border-slate-600">
@@ -81,7 +89,9 @@ const Home = () => {
                                 <div className="flex items-center justify-center absolute top-1 left-1 w-5 h-5 rounded-full bg-gray-900 text-green-500">
                                   <MusicalNoteIcon className="h-4 w-4"  />
                                 </div>
-                                <button className="flex items-center justify-center absolute bottom-8 right-8 z-20 w-12 lg:w-16 h-12 lg:h-16 rounded-full bg-teal-500 hover:bg-teal-600 text-gray-800 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300">
+                                <button
+                                 onClick={() => previewTrack(track.preview)}
+                                 className="flex items-center justify-center absolute bottom-8 right-8 z-10 w-12 lg:w-16 h-12 lg:h-16 rounded-full bg-teal-500 hover:bg-teal-600 text-gray-800 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300">
                                   <PlayIcon className="h-7 w-7"  />
                                 </button>
                                 <img src={track.artist.picture_xl} alt="Song cover" className="w-full rounded-md" />
@@ -106,6 +116,8 @@ const Home = () => {
                     </div>
                 )}
             </div>
+            <PlayerModal open={open} setOpen={setOpen} preview={preview} />
+            </>
         </Layout>
     )
 }
