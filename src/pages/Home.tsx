@@ -47,12 +47,12 @@ const Home = () => {
     return (
         <Layout>
             <div className="grid grid-cols-6 gap-10 px-10 py-5">
-                <div className="md:col-start-2 col-span-6 md:col-span-4 p-5 flex shadow-sm bg-gray-100">
-                    <div className=" bg-gray-300 inset-y-0 flex items-center border-1 border-slate-600">
+                <div className="md:col-start-2 col-span-6 md:col-span-4 p-1 flex shadow-sm">
+                    <div className=" bg-gray-300 inset-y-0 flex items-center rounded-l-full  border-1 border-slate-600">
                         <select
                             id="type"
                             name="type"
-                            className="h-full bg-gray-100 rounded-md border-transparent bg-transparent py-0 pl-2 pr-7 text-teal-500 focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
+                            className="h-full bg-gray-100 rounded-l-full border-transparent bg-transparent py-0 pl-2 pr-7 text-teal-700 focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
                             onChange={handleSelect}
                             value={type}
                         >
@@ -64,12 +64,12 @@ const Home = () => {
                         name="serach"
                         id="search"
                         value={search}
-                        className="block w-3/4 h-10 pl-1 bg-gray-100 border-2 border-gray-200 border-r-0 focus:outline-none sm:text-sm"
+                        className="block flex-1 w-3/4 h-10 pl-1 bg-gray-100 border-2 border-gray-200 border-r-0 focus:outline-none sm:text-sm"
                         placeholder="Eminem"
                         onChange={onChange}
                     />
-                    <div className="bg-gray-100 border-2 border-gray-200 border-l-0 rounded-r-sm inset-y-0 flex items-center px-2">
-                    <MagnifyingGlassIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+                    <div className="bg-gray-100 border-2 border-gray-200 border-l-0 rounded-r-full inset-y-0 flex items-center px-2">
+                     <MagnifyingGlassIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
                     </div>
                 </div>
 
@@ -93,16 +93,18 @@ const Home = () => {
                             </div>
                         </div>
                     ))}
-                </div>
-
-                {/* <div className="flex flex-col w-full px-10 py-5">
                     {(!pending && tracks.length === 0) && (
-                        <div className="text-3xl font-bold text-teal-400 text-center w-full">
+                        <div className="col-span-6 text-2xl font-thin text-amber-300 text-center w-full">
                             No Tracks found. Update search values 
                         </div>
                     ) }
-                    {pending && (<Loader />)}
-                </div> */}
+                </div>
+
+                {pending && (
+                    <div className="md:col-start-2 col-span-6 md:col-span-4 flex flex-col w-full px-10 py-5">
+                        <Loader />
+                    </div>
+                )}
             </div>
         </Layout>
     )
