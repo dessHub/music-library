@@ -81,7 +81,7 @@ const Home = () => {
                         id="search"
                         value={search}
                         className="block flex-1 w-3/4 h-10 pl-1 bg-gray-100 border-2 border-gray-200 border-r-0 focus:outline-none sm:text-sm"
-                        placeholder="Eminem"
+                        placeholder="Search tracks by Title, Artist, Label or Album"
                         onChange={onChange}
                     />
                     <div className="bg-gray-100 border-2 border-gray-200 border-l-0 rounded-r-full inset-y-0 flex items-center px-2">
@@ -102,7 +102,7 @@ const Home = () => {
                                  className="flex items-center justify-center absolute bottom-8 right-8 z-10 w-12 lg:w-16 h-12 lg:h-16 rounded-full bg-teal-500 hover:bg-teal-600 text-gray-800 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300">
                                   <PlayIcon className="h-7 w-7"  />
                                 </button>
-                                <img src={track.artist.picture_xl} alt="Song cover" className="w-full rounded-md" />
+                                <img src={track.artist.picture_xl} alt="Song cover" loading="lazy" className="w-full rounded-md" />
                             </div>
                             <div className="p-5">
                                 <div className="text-teal-600 font-bold text-xl">{track.title}</div>
@@ -125,7 +125,7 @@ const Home = () => {
                 )}
             </div>
             <PlayerModal open={open} setOpen={setOpen} preview={preview} />
-            <ArtistModal open={artistOpen} setOpen={setArtistOpen} artistObject={selectedArtist} />
+            {selectedArtist && (<ArtistModal open={artistOpen} setOpen={setArtistOpen} artistObject={selectedArtist} />)}
             </>
         </Layout>
     )
