@@ -15,3 +15,12 @@ code {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.cs-parent .cs-hidden-child{
+  visibility: hidden;
+}
+
+.cs-parent:hover .cs-hidden-child{
+  visibility: visible;
+}
