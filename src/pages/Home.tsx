@@ -2,12 +2,13 @@ import { useState, useEffect, useCallback, ChangeEvent } from "react";
 import { debounce } from "lodash"
 import Layout from "../components/layouts/Layout";
 import {Option} from "../components/molecules/Select";
-import { MagnifyingGlassIcon, PlayIcon, MusicalNoteIcon } from '@heroicons/react/20/solid'
-import { Link } from "react-router-dom";
+import { MagnifyingGlassIcon, PlayIcon, MusicalNoteIcon } from '@heroicons/react/20/solid';
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { fetchTracks, trackSelector } from "../features/tracks";
 import Loader from "../components/atoms/Loader";
 import PlayerModal from "../components/atoms/PlayerModal";
+import ArtistModal from "../components/atoms/ArtistModal";
+import { Artist } from "../features/tracks/reducer";
 
 const Home = () => {
     const dispatch = useAppDispatch();
@@ -22,6 +23,8 @@ const Home = () => {
     const [type, setType] = useState<string>('q');
     const [open, setOpen] = useState<boolean>(false);
     const [preview, setPreview] = useState<string>('');
+    const [artistOpen, setArtistOpen] = useState<boolean>(false);
+    const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null)
 
     const {pending, tracks} = useAppSelector(trackSelector);
 
@@ -49,6 +52,11 @@ const Home = () => {
     const previewTrack = (trackPreview: string) => {
         setPreview(trackPreview);
         setOpen(true)
+    }
+
+    const handleArtistModal = (artist: Artist) => {
+        setSelectedArtist(artist);
+        setArtistOpen(true)
     }
 
     return (
@@ -99,7 +107,7 @@ const Home = () => {
                             <div className="p-5">
                                 <div className="text-teal-600 font-bold text-xl">{track.title}</div>
                                 <div className="text-white text-xs font-light"><span className="text-xs font-semibold">Duration:</span> {track.duration}s</div>
-                                <div className="text-white text-sm font-thin">By <Link to={`/artist/${track.artist.id}`} className="text-md font-bold underline">{track.artist.name}</Link></div>
+                                <div className="text-white text-sm font-thin">By <button onClick={()=> handleArtistModal(track.artist)} className="text-md font-bold underline">{track.artist.name}</button></div>
                             </div>
                         </div>
                     ))}
@@ -117,6 +125,7 @@ const Home = () => {
                 )}
             </div>
             <PlayerModal open={open} setOpen={setOpen} preview={preview} />
+            <ArtistModal open={artistOpen} setOpen={setArtistOpen} artistObject={selectedArtist} />
             </>
         </Layout>
     )
